@@ -151,7 +151,7 @@ def _create_network(incoming, reuse=None, weight_decay=1e-8):
     # Features in rows, normalize axis 1.
     features = slim.batch_norm(features, scope="ball", reuse=reuse)
     feature_norm = tf.sqrt(
-        tf.constant(1e-8, tf.float32) +
+        tf.constant(1e-8, tf.float) +
         tf.reduce_sum(tf.square(features), [1], keepdims=True))
     features = features / feature_norm
     return features, None
@@ -198,7 +198,7 @@ def main():
         input_var = tf.placeholder(
             tf.uint8, (None, 128, 64, 3), name="images")
         image_var = tf.map_fn(
-            lambda x: _preprocess(x), tf.cast(input_var, tf.float32),
+            lambda x: _preprocess(x), tf.cast(input_var, tf.float),
             back_prop=False)
 
         factory_fn = _network_factory()
